@@ -1,0 +1,12 @@
+# Ignore node_modules and package-lock.json
+node_modules
+package-lock.json
+
+# Other potential files/directories to ignore
+.DS_Store
+.git
+.gitignore
+logs
+*.log
+npm-debug.log*
+.env
