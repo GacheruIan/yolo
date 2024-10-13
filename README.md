@@ -39,4 +39,4 @@ npm start
 
 ## Add a Product
 To add a product, fill in the product details in the form. Note that the price field only accepts numeric input.
-<img src="../client//src/images/Pasted image.png" alt="TagsDocker" />
+<img src="./client/src/images/Pasted image.png" alt="TagsDocker" />
