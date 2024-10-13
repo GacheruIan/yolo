@@ -1,170 +1,82 @@
+# Project Name
+
 ## 1. Choice of Base Image
- The base image used to build the containers is `node:16-alpine3.16`. It is derived from the Alpine Linux distribution, making it lightweight and compact. 
- Used 
- 1. Client:`node:16-alpine3.16`
- 2. Backend: `node:16-alpine3.16`
- 3.Mongo : `mongo:6.0 `
-       
-
-## 2. Dockerfile directives used in the creation and running of each container.
- I used two Dockerfiles. One for the Client and the other one for the Backend.
-
-**Client Dockerfile**
-
-```
-# Build stage
-FROM node:16-alpine3.16 as build-stage
-
-# Set the working directory inside the container
-WORKDIR /client
-
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
-# Install dependencies and clears the npm cache and removes any temporary files
-RUN npm install --only=production && \
-    npm cache clean --force && \
-    rm -rf /tmp/*
-
-# Copy the rest of the application code
-COPY . .
-
-# Build the application and  remove development dependencies
-RUN npm run build && \
-    npm prune --production
-
-# Production stage
-FROM node:16-alpine3.16 as production-stage
-
-WORKDIR /client
-
-# Copy only the necessary files from the build stage
-COPY --from=build-stage /client/build ./build
-COPY --from=build-stage /client/public ./public
-COPY --from=build-stage /client/src ./src
-COPY --from=build-stage /client/package*.json ./
-
-# Set the environment variable for the app
-ENV NODE_ENV=production
-
-# Expose the port used by the app
-EXPOSE 3000
-
-# Prune the node_modules directory to remove development dependencies and clears the npm cache and removes any temporary files
+The base image used for both the frontend (`my-client`) and backend (`backend`) services is **Node.js 16-alpine3.16**. This Alpine version is selected for its lightweight nature, security features, and suitability for production environments. Using Alpine images helps reduce the container size, which is essential for faster builds and deployments.
 
 
-# Start the application
-CMD ["npm", "start"]
+## 2. Dockerfile Directives
 
-```
-**Backend Dockerfile**
+### Frontend (Client):
+**Build Stage:**
+- **WORKDIR /client:** Sets the working directory.
+- **COPY package*.json ./:** Copies necessary package files.
+- **RUN npm install:** Installs dependencies.
+- **COPY . .:** Copies the entire project.
+- **RUN npm run build:** Builds the React app for production.
 
-```
-# Set base image
-FROM node:16-alpine3.16
+**Production Stage:**
+- **COPY --from=build:** Copies built static files from the build stage.
+- **RUN npm install --only=production:** Installs only production dependencies.
+- **CMD ["npm", "start"]**: Starts the application.
 
-# Set the working directory
-WORKDIR /backend
+### Backend:
+**Build Stage:**
+- **WORKDIR /backend:** Sets the working directory.
+- **COPY package*.json ./:** Copies necessary package files.
+- **RUN npm install:** Installs both dev and production dependencies.
+- **COPY . .:** Copies the entire project.
 
-# Copy package.json and package-lock.json to the container
-COPY package*.json ./
+**Production Stage:**
+- **COPY --from=build:** Copies backend production files from the build stage.
+- **RUN npm prune --production:** Prunes unnecessary development dependencies.
+- **CMD ["npm", "start"]**: Starts the backend service.
 
-# Install dependencies and clears the npm cache and removes any temporary files
-RUN npm install --only=production && \
-    npm cache clean --force && \
-    rm -rf /tmp/*
-
-# Copy the rest of the application code
-COPY . .
-
-# Set the environment variable for the app
-ENV NODE_ENV=production
-
-# Expose the port used by the app
-EXPOSE 5000
-
-# Prune the node_modules directory to remove development dependencies and clears the npm cache and removes any temporary files
-RUN npm prune --production && \
-    npm cache clean --force && \
-    rm -rf /tmp/*
-
-# Start the application
-CMD ["npm", "start"]
-
-```
-
-## 3. Docker Compose Networking
-The (docker-compose.yml) defines the networking configuration for the project. It includes the allocation of application ports. The relevant sections are as follows:
+**MongoDB:** The MongoDB service uses the `mongo:4.4.18-focal` image, a lightweight version based on Ubuntu's focal release.
 
 
-```
-services:
-  backend:
-    # ...
-    ports:
-      - "5000:5000"
-    networks:
-      - yolo-network
-
-  client:
-    # ...
-    ports:
-      - "3000:3000"
-    networks:
-      - yolo-network
+## 3. Docker-compose Networking
+- **Ports:**
+  - Frontend (`my-client`) is mapped to `localhost:3000`.
+  - Backend (`backend`) is mapped to `localhost:5000`.
+  - MongoDB (`mongo`) is mapped to `localhost:27017`.
   
-  mongodb:
-    # ...
-    ports:
-      - "27017:27017"
-    networks:
-      - yolo-network
-
-networks:
-  yolo-network:
-    driver: bridge
-```
-In this configuration, the backend container is mapped to port 5000 of the host, the client container is mapped to port 3000 of the host, and mongodb container is mapped to port 27017 of the host. All containers are connected to the yolo-network bridge network.
+- **Bridge Network (inet):** All services are connected through a custom bridge network (`inet`), allowing inter-service communication by container names, such as `mongo`, `backend`, and `my-client`.
 
 
-## 4.  Docker Compose Volume Definition and Usage
-The Docker Compose file includes volume definitions for MongoDB data storage. The relevant section is as follows:
+## 4. Docker-compose Volume Definition
+### MongoDB Data Persistence:
+The volume **mongo-data** is defined and mounted to `/data/db` in the MongoDB service. This setup ensures that MongoDB data persists even if the container is stopped or removed.
 
-yaml
 
-```
-volumes:
-  mongodata:  # Define Docker volume for MongoDB data
-    driver: local
+## 5. Git Workflow
+### Branches:
+- **Master branch:** For production-ready code.
+- **gh-workshop:** Used For feature developmen
 
-```
-This volume, mongodb_data, is designated for storing MongoDB data. It ensures that the data remains intact and is not lost even if the container is stopped or deleted.
+### Commit Messages:
+Use meaningful commit messages used.
 
-## 5. Git Workflow to achieve the task
+### Pull Requests:
+Ensure code reviews are conducted before merging into the master branch to maintain code quality.
 
-To achieve the task the following git workflow was used:
+## 6.0 Successful running of the applications 
+Up and running wit persistency and images reduced size.
+## 6.1 Debugging Measures
+### Healthchecks:
+Both frontend and backend services include health checks to monitor the health of the services:
+- **Frontend:** Checks the availability of `http://localhost:3000`.
+- **Backend:** Checks the backend's health endpoint at `http://localhost:5000/health`.
 
-1. Fork the repository from the original repository.
-2. Clone the repo: `git@github.com:Maubinyaachi/yolo-Microservice.git`
-3. Create a .gitignore file to exclude unnecessary     files and directories from version control.
-4. Added Dockerfile for the client to the repo:
-`git add client/Dockerfile`
-5. Add Dockerfile for the backend to the repo:
-`git add backend/dockerfile`
-6. Committed the changes:
-`git commit -m "Added Dockerfiles"`
-7. Added docker-compose file to the repo:
-`git add docker-compose.yml`
-8. Committed the changes:
-`git commit -m "Added docker-compose file"`
-9. Pushed the files to github:
-`git push `
-10. Built the client and backend images:
-`docker compose build`
-11. Pushed the built imags to docker registry:
-`docker compose push`
-12. Deployed the containers using docker compose:
-`docker compose up`
+### Container Logs:
+Use `docker-compose logs -f <service>` to tail logs for each service and identify any runtime errors.
 
-13. Created explanation.md file and modified it as the commit messages in the repo will explain.
+### Build Failures:
+Multi-stage builds are utilized to separate dependencies for different environments and reduce the complexity of the final image.
 
+
+## 7. Docker Image Tag Naming Standards
+<img src="./client/src/images/image-tags-docker.png" alt="TagsDocker" />
+
+
+## 8. Deployed Image on DockerHub
+<img src="./client/src/images/deploytohub.png" alt="Deploy to docker hub" />
