@@ -1,26 +1,57 @@
 services:
-  client:
-    build: ./client
+  my-client:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    image: my-client:1.0
     ports:
       - "3000:3000"
     depends_on:
       - backend
+    networks:
+      - inet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]  
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: backend:1.0
     ports:
       - "5000:5000"
     depends_on:
       - mongo
     environment:
       MONGO_URL: mongodb://mongo:27017/mydatabase
+    networks:
+      - inet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"] 
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   mongo:
-    image: mongo:4.4
+    image: mongo:4.4.18-focal  # Smaller MongoDB image
     ports:
-      - "27017:27017"
+      - "27017:27017"  
     volumes:
       - mongo-data:/data/db
+    networks:
+      - inet
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  inet:
+    driver: bridge
 
 volumes:
   mongo-data:
