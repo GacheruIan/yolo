@@ -1,4 +1,4 @@
-# Project Name
+# YOLOMY
 
 ## 1. Choice of Base Image
 The base image used for both the frontend (`my-client`) and backend (`backend`) services is **Node.js 16-alpine3.16**. This Alpine version is selected for its lightweight nature, security features, and suitability for production environments. Using Alpine images helps reduce the container size, which is essential for faster builds and deployments.
@@ -60,7 +60,8 @@ Use meaningful commit messages used.
 Ensure code reviews are conducted before merging into the master branch to maintain code quality.
 
 ## 6.0 Successful running of the applications 
-Up and running wit persistency and images reduced size.
+Up and running with persistency.
+
 ## 6.1 Debugging Measures
 ### Healthchecks:
 Both frontend and backend services include health checks to monitor the health of the services:
