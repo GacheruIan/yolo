@@ -4,7 +4,7 @@ services:
     build: 
       context: ./client
       dockerfile: Dockerfile
-    image: my-client:1.0
+    image: iangacheru/my-client:1.0
     ports:
       - "3000:3000"
     depends_on:
@@ -12,7 +12,8 @@ services:
     networks:
       - inet
     volumes:
-      - ./client:/app
+      # Bind-mount client directory for development (adjust for production)
+      - ./client:/usr/src/app
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]  
       interval: 30s
@@ -23,7 +24,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: backend:1.0
+    image: iangacheru/backend:1.0
     ports:
       - "5000:5000"
     depends_on:
@@ -33,7 +34,8 @@ services:
     networks:
       - inet
     volumes:
-      - ./backend:/app
+      # Bind-mount backend directory for development (adjust for production)
+      - ./backend:/usr/src/app
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/health"] 
       interval: 30s
