@@ -1,8 +1,14 @@
 # YOLOMY
 
-## Introduction
+## Manual-Setting-Up
 
-The YOLO Project is a full-stack application designed for managing products seamlessly. This application features a client and backend, both running within Docker containers, providing a robust environment for development and deployment. Follow the instructions below to set up and run the project on your local machine.
+The YOLO Project is a full-stack application designed for managing products seamlessly. 
+
+This application features a client and backend, both running within Docker containers, 
+
+providing a robust environment for development and deployment. Follow the instructions 
+
+below to set up and run the project on your local machine.
 
 To get started, clone the repository using the following command:
 
