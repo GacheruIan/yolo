@@ -14,7 +14,7 @@ git clone git@github.com:GacheruIan/yolo.git
 ### Change into the project directory:
 cd yolo
 ### Run the following command to build and start the Docker containers:
-docker compose up --build
+docker compose up --build -> plls images from my docker-hub repository.
 
 ## Start the Client
 
