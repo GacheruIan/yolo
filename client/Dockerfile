@@ -1,28 +1,28 @@
 # Build stage
 FROM node:14-slim AS build
 
-# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy the package.json and package-lock.json files to the container
+# Copy package.json and install dependencies
 COPY package*.json ./
+RUN npm install 
 
-# Install application dependencies
-RUN npm install --only=production
-
-# Copy the rest of the application code to the container
+# Copy the rest of the client code
 COPY . .
 
-# Production stage using Alpine
+# Build the React app for production
+RUN npm run build
+
+# Production stage (lightweight)
 FROM node:14-alpine
 
 WORKDIR /app
 
-# Copy only the necessary files from the build stage
+# Copy the build files from the previous stage
 COPY --from=build /usr/src/app /app
 
-# Expose the port the app runs on
+# Expose the port for the frontend
 EXPOSE 3000
 
-# Define the command to run your app
+# Start the client service
 CMD ["npm", "start"]
