@@ -78,6 +78,5 @@ Multi-stage builds are utilized to separate dependencies for different environme
 ## 7. Docker Image Tag Naming Standards
 <img src="./client/src/images/image-tags-docker.png" alt="TagsDocker" />
 
-
 ## 8. Deployed Image on DockerHub
 <img src="./client/src/images/deploytohub.png" alt="Deploy to docker hub" />
