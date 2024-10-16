@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_CREDENTIALS_ID = 'docker-credentials' 
+        DOCKERHUB_USERNAME = 'iangacheru'
+        CLIENT_IMAGE = 'client'
+        SERVER_IMAGE = 'server'
+        IMAGE_TAG = "1.1"  // You can change this tag as needed
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/GacheruIan/yolo.git', branch: 'master'
+            }
+        }
+        stage('Build Client Docker Image') {
+            steps {
+                script {
+                    dir('client') { // Adjust if youll nest path...
+                        sh "docker build -t ${DOCKERHUB_USERNAME}/${CLIENT_IMAGE}:${IMAGE_TAG} ."
+                    }
+                }
+            }
+        }
+        stage('Build Server Docker Image') {
+            steps {
+                script {
+                    dir('backend') { // Adjust if youll nest path...
+                        sh "docker build -t ${DOCKERHUB_USERNAME}/${SERVER_IMAGE}:${IMAGE_TAG} ."
+                    }
+                }
+            }
+        }
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+                    }
+                }
+            }
+        }
+        stage('Push Client Docker Image') {
+            steps {
+                script {
+                    sh "docker push ${DOCKERHUB_USERNAME}/${CLIENT_IMAGE}:${IMAGE_TAG}"
+                }
+            }
+        }
+        stage('Push Server Docker Image') {
+            steps {
+                script {
+                    sh "docker push ${DOCKERHUB_USERNAME}/${SERVER_IMAGE}:${IMAGE_TAG}"
+                }
+            }
+        }
+    }
+    post {
+        always {
+            sh "docker rmi ${DOCKERHUB_USERNAME}/${CLIENT_IMAGE}:${IMAGE_TAG} || true"
+            sh "docker rmi ${DOCKERHUB_USERNAME}/${SERVER_IMAGE}:${IMAGE_TAG} || true"
+        }
+    }
+}
