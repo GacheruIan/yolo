@@ -1,11 +1,11 @@
 pipeline {
     agent any
     environment {
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' 
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
         DOCKERHUB_USERNAME = 'iangacheru'
         CLIENT_IMAGE = 'client'
         SERVER_IMAGE = 'server'
-        IMAGE_TAG = "1.1"  // You can change this tag as needed
+        IMAGE_TAG = "1.1"
     }
     stages {
         stage('Checkout') {
@@ -16,7 +16,7 @@ pipeline {
         stage('Build Client Docker Image') {
             steps {
                 script {
-                    dir('client') { // Adjust if youll nest path...
+                    dir('client') {
                         sh "docker build -t ${DOCKERHUB_USERNAME}/${CLIENT_IMAGE}:${IMAGE_TAG} ."
                     }
                 }
@@ -25,7 +25,7 @@ pipeline {
         stage('Build Server Docker Image') {
             steps {
                 script {
-                    dir('backend') { // Adjust if youll nest path...
+                    dir('backend') {
                         sh "docker build -t ${DOCKERHUB_USERNAME}/${SERVER_IMAGE}:${IMAGE_TAG} ."
                     }
                 }
@@ -51,6 +51,14 @@ pipeline {
             steps {
                 script {
                     sh "docker push ${DOCKERHUB_USERNAME}/${SERVER_IMAGE}:${IMAGE_TAG}"
+                }
+            }
+        }
+        // Optional stage to build and run using Docker Compose
+        stage('Build and Run with Docker Compose') {
+            steps {
+                script {
+                    sh "docker-compose up --build -d"
                 }
             }
         }
