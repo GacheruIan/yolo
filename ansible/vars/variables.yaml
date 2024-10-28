@@ -2,3 +2,7 @@ packages:
   - docker.io
   - docker-compose
   - npm
+
+frontend_port: 3000
+backend_port: 5000
+container_image: "myapp:latest"
