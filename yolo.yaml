@@ -1,0 +1,45 @@
+---
+- name: Yolo project setup + provisioning ubuntu 
+  hosts: all
+  become: true
+  vars_files:
+    - ansible/vars/variables.yaml 
+
+  tasks:
+    - name: Update and Upgrade APT packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install necessary packages for Docker and Node.js
+      apt:
+        name: "{{ packages }}"
+        state: present
+      loop: "{{ packages }}"  
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Clone the YOLO repository
+      git:
+        repo: 'git@github.com:GacheruIan/yolo.git'
+        dest: '/home/ubuntu/yolo'
+        version: 'master'
+
+    - name: Build and start Docker containers
+      community.docker.docker_compose:
+        project_src: /home/ubuntu/yolo
+        restarted: true
+
+    - name: Install client dependencies
+      npm:
+        path: /home/ubuntu/yolo/client
+        state: present
+
+    - name: Install backend dependencies
+      npm:
+        path: /home/ubuntu/yolo/backend
+        state: present
