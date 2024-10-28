@@ -7,39 +7,58 @@
 
   tasks:
     - name: Update and Upgrade APT packages
-      apt:
-        update_cache: yes
-        upgrade: dist
+      block:
+        - name: Update APT package cache
+          apt:
+            update_cache: yes
+        
+        - name: Upgrade APT packages
+          apt:
+            upgrade: dist
 
     - name: Install necessary packages for Docker and Node.js
-      apt:
-        name: "{{ packages }}"
-        state: present
-      loop: "{{ packages }}"  
+      block:
+        - name: Install packages
+          apt:
+            name: "{{ packages }}"
+            state: present
+          loop: "{{ packages }}"  
 
-    - name: Start and enable Docker service
-      service:
-        name: docker
-        state: started
-        enabled: true
+    - name: Manage Docker service
+      block:
+        - name: Start Docker service
+          service:
+            name: docker
+            state: started
+
+        - name: Enable Docker service on boot
+          service:
+            name: docker
+            enabled: true
 
     - name: Clone the YOLO repository
-      git:
-        repo: 'git@github.com:GacheruIan/yolo.git'
-        dest: '/home/ubuntu/yolo'
-        version: 'master'
+      block:
+        - name: Clone the repository from GitHub
+          git:
+            repo: 'https://github.com/GacheruIan/yolo.git'
+            dest: '/home/ubuntu/yolo'
+            version: 'master'
 
     - name: Build and start Docker containers
-      community.docker.docker_compose:
-        project_src: /home/ubuntu/yolo
-        restarted: true
+      block:
+        - name: Build and start containers using Docker Compose
+          community.docker.docker_compose:
+            project_src: /home/ubuntu/yolo
+            restarted: true
 
-    - name: Install client dependencies
-      npm:
-        path: /home/ubuntu/yolo/client
-        state: present
+    - name: Install project dependencies
+      block:
+        - name: Install client dependencies
+          npm:
+            path: /home/ubuntu/yolo/client
+            state: present
 
-    - name: Install backend dependencies
-      npm:
-        path: /home/ubuntu/yolo/backend
-        state: present
+        - name: Install backend dependencies
+          npm:
+            path: /home/ubuntu/yolo/backend
+            state: present
