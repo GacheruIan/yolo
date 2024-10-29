@@ -30,22 +30,22 @@ Before you begin, ensure you have met the following requirements:
 
 2. **Provision the Vagrant box:**
    vagrant up
-   <img src="./client/src/images/ip31.png" alt="vagrant" />
+   <img src="./client/src/images/ip30.png" alt="vagrant" />
 
 3. **SSH into the Vagrant box:**
    vagrant ssh
    cd /home/ubuntu/yolo
    docker ps-a to confirm images are well config
    docker-compose up
-   <img src="./client/src/images/ip32.png" alt="vagrant" />
+   <!-- <img src="./client/src/images/ip32.png" alt="vagrant" /> -->
 
-**use yaml in stage1 to achieve the above accurately, the new yaml some things are different for stage2 objectives**
+   **use yaml in stage1 to achieve the above accurately, the new yaml some things are different for stage2 objectives**
 
 
 
-# Stage 2: Ansible and Terraform - Automated Infrastructure and Application Provisioning
+   # Stage 2: Ansible and Terraform - Automated Infrastructure and Application Provisioning
 
-extending our environment to incorporate both Terraform for infrastructure provisioning and Ansible for configuration management and application deployment. This setup enables a fully automated workflow, allowing us to provision and configure a server with a single command.
+   extending our environment to incorporate both Terraform for infrastructure provisioning and Ansible for configuration management and application deployment. This setup enables a fully automated workflow, allowing us to provision and configure a server with a single command.
 
 ## Installation
 
@@ -59,13 +59,13 @@ extending our environment to incorporate both Terraform for infrastructure provi
    terraform init
 
 
-  **Apply Terraform Configuration: Creates a Docker container based on Ubuntu.**
+2. **Apply Terraform Configuration: Creates a Docker container based on Ubuntu.**
 
    terraform apply     
    confirm by saying yes
 
 
-2. **Step 2: Configure and Deploy Application with Ansible**
+3. **Step 2: Configure and Deploy Application with Ansible**
 
    Add Your Docker container’s IP (e.g., 172.17.0.2), to the Ansible hosts inventory file.
 
@@ -76,7 +76,7 @@ extending our environment to incorporate both Terraform for infrastructure provi
    **docker inspect <container_name_or_id> | grep "IPAddress"**
 
 
-3.  **Run Ansible Playbook:**
+4.  **Run Ansible Playbook:**
 
    Deploys and configures the application on the provisioned Docker container.
 
@@ -85,7 +85,7 @@ extending our environment to incorporate both Terraform for infrastructure provi
    you can add --ask-become-pass if facing sudo err.
 
 
-  **Visit http://172.17.0.2:3000 in your browser to verify deployment or the ip you specified**
+    **Visit http://172.17.0.2:3000 in your browser to verify deployment or the ip you specified**
 
 
    <img src="./client/src/images/ip32.png" alt="vagrant" />
