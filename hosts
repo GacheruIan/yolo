@@ -1,1 +1,4 @@
 yolo ansible_host=127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_private_key_file=/home/iankibue/devops07/yolo/.vagrant/machines/default/virtualbox/private_key
+
+[docker]
+172.17.0.2 ansible_ssh_user=euser ansible_ssh_pass=pass
