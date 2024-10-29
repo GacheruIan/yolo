@@ -39,7 +39,7 @@ Before you begin, ensure you have met the following requirements:
    docker-compose up
    <img src="./client/src/images/ip32.png" alt="vagrant" />
 
-**some config in stage1 had to be commented out in stage2 you can use commit logs to check first yaml or switch to stage1 branch**
+**use yaml in stage1 to achieve the above accurately, the new yaml some things are different for stage2 objectives**
 
 
 
