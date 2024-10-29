@@ -1,5 +1,5 @@
 ---
-- name: Yolo project setup + provisioning ubuntu 
+- name: YOLO project setup + provisioning Ubuntu 
   hosts: docker
   become: yes
   vars_files:
@@ -7,77 +7,107 @@
 
   tasks:
     - name: Install sudo
-      apt:
+      ansible.builtin.apt:
         name: sudo
         state: present
-        
-    - name: Update and Upgrade APT packages
-      block:
-        - name: Update APT package cache
-          apt:
-            update_cache: yes
-        - name: Upgrade APT packages
-          apt:
-            upgrade: dist
 
-    - name: Install necessary packages for Docker and Node.js
-      block:
-        - name: Install packages
-          apt:
-            name: "{{ packages }}"
-            state: present
-          loop: "{{ packages }}"  
-
-    # - name: Manage Docker service
-    #   block:
-    #     - name: Start Docker service
-    #       service:
-    #         name: docker
-    #         state: started
-    #     - name: Enable Docker service on boot
-    #       service:
-    #         name: docker
-    #         enabled: true
+    - name: Install necessary packages for Node.js
+      ansible.builtin.apt:
+        name: "{{ packages }}"
+        state: present
+      loop: "{{ packages }}"
 
     - name: Clone the YOLO repository
-      block:
-        - name: Clone the repository from GitHub
-          git:
-            repo: 'https://github.com/GacheruIan/yolo.git'
-            dest: '/home/ubuntu/yolo'
-            version: 'master'
+      ansible.builtin.git:
+        repo: 'https://github.com/GacheruIan/yolo.git'
+        dest: '/home/ubuntu/yolo'
+        version: 'master'
 
-    # - name: Build and start Docker containers
-    #   block:
-    #     - name: Build and start containers using Docker Compose
-    #       community.docker.docker_compose:
-    #         project_src: /home/ubuntu/yolo
-    #         restarted: true
+    - name: Ensure apt-transport-https is installed
+      ansible.builtin.apt:
+        name: apt-transport-https
+        state: present
+
+    - name: Add MongoDB GPG key
+      ansible.builtin.apt_key:
+        url: 'https://www.mongodb.org/static/pgp/server-6.0.asc'
+        state: present
+
+    - name: Create MongoDB list file
+      ansible.builtin.copy:
+        dest: /etc/apt/sources.list.d/mongodb-org-6.0.list
+        content: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/multiverse mongodb-org/6.0 main"
+
+    - name: Update APT package cache after adding MongoDB repo
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install MongoDB
+      ansible.builtin.apt:
+        name: mongodb-org
+        state: present
+
+    # New task to create MongoDB data directory
+    - name: Create MongoDB data directory
+      ansible.builtin.file:
+        path: /data/db
+        state: directory
+        mode: '0755'
+
+    # New task to create MongoDB log directory
+    - name: Create MongoDB log directory
+      ansible.builtin.file:
+        path: /var/log/mongodb
+        state: directory
+        mode: '0755'
+
+    # Start MongoDB with bind IP set to 0.0.0.0 and forked to run in the background
+    - name: Start MongoDB service
+      ansible.builtin.command:
+        cmd: mongod --bind_ip 0.0.0.0 --fork --logpath /var/log/mongodb/mongod.log
+      async: 1
+      poll: 0
+      ignore_errors: yes
+
+    # Check MongoDB logs for any errors after starting
+    - name: Check MongoDB logs
+      command: tail -n 50 /var/log/mongodb/mongod.log
+      register: mongo_logs
+      ignore_errors: yes
+
+    # Display MongoDB logs for debugging
+    - name: Display MongoDB logs
+      debug:
+        var: mongo_logs.stdout
+
+    # Wait for MongoDB to start
+    - name: Wait for MongoDB to be available
+      wait_for:
+        port: 27017
+        delay: 5
+        timeout: 60  # Wait for a maximum of 60 seconds
 
     - name: Install project dependencies
       block:
         - name: Install client dependencies
-          npm:
+          ansible.builtin.npm:
             path: /home/ubuntu/yolo/client
             state: present
+
+        - name: Start the client application using npm
+          command: >
+            sh -c 'NODE_OPTIONS="--openssl-legacy-provider" npm start'
+          args:
+            chdir: /home/ubuntu/yolo/client
+            
         - name: Install backend dependencies
-          npm:
+          ansible.builtin.npm:
             path: /home/ubuntu/yolo/backend
             state: present
 
-    - name: Check if port 5000 is in use
-      command: lsof -t -i :5000
-      register: port_check
-      ignore_errors: true
-
-    - name: Stop process using port 5000
-      command: kill -9 {{ item }}
-      loop: "{{ port_check.stdout_lines }}"
-      when: port_check.stdout_lines | length > 0
-
-    - name: Run the application
-      block:
-        - name: Start the application using npm
-          command: npm start
+        - name: Start the backend application using npm
+          command: >
+            sh -c 'NODE_OPTIONS="--openssl-legacy-provider" npm start'
           args:
             chdir: /home/ubuntu/yolo/backend
