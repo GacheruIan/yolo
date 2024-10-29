@@ -47,7 +47,7 @@ Before you begin, ensure you have met the following requirements:
 
    extending our environment to incorporate both Terraform for infrastructure provisioning and Ansible for configuration management and application deployment. This setup enables a fully automated workflow, allowing us to provision and configure a server with a single command.
 
-## Installation
+   ## Installation
 
 1. **Step 1: Provision Infrastructure with Terraform:**
 
