@@ -30,14 +30,14 @@ Before you begin, ensure you have met the following requirements:
 
 2. **Provision the Vagrant box:**
    vagrant up
-   <img src="./client/src/images/ip30.png" alt="vagrant" />
+   <img src="./client/src/images/ip31.png" alt="vagrant" />
 
 3. **SSH into the Vagrant box:**
    vagrant ssh
    cd /home/ubuntu/yolo
    docker ps-a to confirm images are well config
    docker-compose up
-   <!-- <img src="./client/src/images/ip32.png" alt="vagrant" /> -->
+   <img src="./client/src/images/ip30.png" alt="vagrant" />
 
    **use yaml in stage1 to achieve the above accurately, the new yaml some things are different for stage2 objectives**
 
@@ -88,4 +88,4 @@ Before you begin, ensure you have met the following requirements:
     **Visit http://172.17.0.2:3000 in your browser to verify deployment or the ip you specified**
 
 
-   <img src="./client/src/images/ip32.png" alt="vagrant" />
+   <img src="./client/src/images/social_icons/IP33.png" alt="vagrant" />
