@@ -58,11 +58,16 @@ Before you begin, ensure you have met the following requirements:
 
    terraform init
 
+   <br />
+
 
 2. **Apply Terraform Configuration: Creates a Docker container based on Ubuntu.**
 
    terraform apply     
    confirm by saying yes
+
+
+   <br />
 
 
 3. **Step 2: Configure and Deploy Application with Ansible**
@@ -76,6 +81,8 @@ Before you begin, ensure you have met the following requirements:
    **docker inspect <container_name_or_id> | grep "IPAddress"**
 
 
+   <br />
+   
 4.  **Run Ansible Playbook:**
 
    Deploys and configures the application on the provisioned Docker container.
