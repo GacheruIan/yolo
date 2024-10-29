@@ -49,7 +49,7 @@ Before you begin, ensure you have met the following requirements:
 
    ## Installation
 
-1. **Step 1: Provision Infrastructure with Terraform:**
+1. **Provision Infrastructure with Terraform:**
 
    Navigate to the Terraform directory:
 
@@ -70,7 +70,7 @@ Before you begin, ensure you have met the following requirements:
    <br />
 
 
-3. **Step 2: Configure and Deploy Application with Ansible**
+3. **Configure and Deploy Application with Ansible**
 
    Add Your Docker container’s IP (e.g., 172.17.0.2), to the Ansible hosts inventory file.
 
