@@ -43,4 +43,46 @@ Before you begin, ensure you have met the following requirements:
 
 
 
-   
+# Stage 2: Ansible and Terraform - Automated Infrastructure and Application Provisioning
+
+extending our environment to incorporate both Terraform for infrastructure provisioning and Ansible for configuration management and application deployment. This setup enables a fully automated workflow, allowing us to provision and configure a server with a single command.
+
+## Installation
+
+1. **Step 1: Provision Infrastructure with Terraform:**
+
+   Navigate to the Terraform directory:
+
+
+   **Initialize Terraform: Downloads required provider plugins.**
+
+   terraform init
+
+   <img src="./client/src/images/ip31.png" alt="vagrant" />
+
+  **Apply Terraform Configuration: Creates a Docker container based on Ubuntu.**
+
+   terraform apply     
+   confirm by saying yes
+
+
+   <img src="./client/src/images/ip31.png" alt="vagrant" />
+
+
+2. **Step 2: Configure and Deploy Application with Ansible**
+   Add Your Docker container’s IP (e.g., 172.17.0.2) to the Ansible hosts inventory file.
+   Currently the existing one is my IP for my running docker image
+   You can check your ip by running:-
+   **docker inspect <container_name_or_id> | grep "IPAddress"**
+
+
+   **Run Ansible Playbook:**
+   Deploys and configures the application on the provisioned Docker container.
+
+   **ansible-playbook ansible/yolo.yaml** you can add --ask-become-pass if facing sudo err.
+
+
+  **Visit http://172.17.0.2:3000 in your browser to verify deployment or the ip you specified**
+
+
+   <img src="./client/src/images/ip33.png" alt="vagrant" />
