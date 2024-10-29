@@ -70,16 +70,23 @@ extending our environment to incorporate both Terraform for infrastructure provi
 
 
 2. **Step 2: Configure and Deploy Application with Ansible**
-   Add Your Docker container’s IP (e.g., 172.17.0.2) to the Ansible hosts inventory file.
-   Currently the existing one is my IP for my running docker image
+
+   Add Your Docker container’s IP (e.g., 172.17.0.2), to the Ansible hosts inventory file.
+
+   Currently the existing one is my IP for my running docker image.
+
    You can check your ip by running:-
+
    **docker inspect <container_name_or_id> | grep "IPAddress"**
 
 
    **Run Ansible Playbook:**
+
    Deploys and configures the application on the provisioned Docker container.
 
-   **ansible-playbook ansible/yolo.yaml** you can add --ask-become-pass if facing sudo err.
+   **ansible-playbook ansible/yolo.yaml** 
+   
+   you can add --ask-become-pass if facing sudo err.
 
 
   **Visit http://172.17.0.2:3000 in your browser to verify deployment or the ip you specified**
