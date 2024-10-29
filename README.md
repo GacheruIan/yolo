@@ -82,15 +82,17 @@ Before you begin, ensure you have met the following requirements:
 
 
    <br />
-   
-4.  **Run Ansible Playbook:**
+
+4. **Run Ansible Playbook:**
 
    Deploys and configures the application on the provisioned Docker container.
 
    **ansible-playbook ansible/yolo.yaml** 
    
-   you can add --ask-become-pass if facing sudo err.
+   you can add --ask-become-pass if facing sudo err. 
 
+
+   <br />
 
     **Visit http://172.17.0.2:3000 in your browser to verify deployment or the ip you specified**
 
