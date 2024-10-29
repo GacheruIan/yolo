@@ -85,4 +85,4 @@ extending our environment to incorporate both Terraform for infrastructure provi
   **Visit http://172.17.0.2:3000 in your browser to verify deployment or the ip you specified**
 
 
-   <img src="./client/src/images/ip33.png" alt="vagrant" />
+   <img src="./client/src/images/IP33.png" alt="vagrant" />
