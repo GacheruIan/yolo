@@ -1,48 +1,46 @@
-# YOLOMY
+# YOLO Project Setup - Stage 1
 
-## Manual-Setting-Up
+This README outlines the setup and provisioning of the YOLO project using Ansible and Vagrant.
+
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Verification](#verification)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
+- [Contributing](#contributing)
+- [Acknowledgments](#acknowledgments)
+
+## Project Overview
 
 The YOLO Project is a full-stack application designed for managing products seamlessly. 
 
-This application features a client and backend, both running within Docker containers, 
+## Requirements
 
-providing a robust environment for development and deployment. Follow the instructions 
+Before you begin, ensure you have met the following requirements:
 
-below to set up and run the project on your local machine.
+- [Vagrant](https://www.vagrantup.com/downloads) installed on your machine.
+- [VirtualBox](https://www.virtualbox.org/) installed.
+- [Ansible &  Terraform](https://www.ansible.com/) installed on your host machine.
 
-To get started, clone the repository using the following command:
+## Installation
 
+1. **Clone the repository:**
 
-git clone git@github.com:GacheruIan/yolo.git
+   ```bash
+   git clone https://github.com/GacheruIan/yolo.git
+   cd yolo
 
+2. **Provision the Vagrant box:**
+   vagrant up
+   <img src="./client/src/images/ip31.png" alt="vagrant" />
 
-
-### Change into the project directory:
-cd yolo
-### Run the following command to build and start the Docker containers:
-docker compose up --build -> plls images from my docker-hub repository.
-
-## Start the Client
-
-### Navigate to the client directory:
-cd client
-### Install the required dependencies:
-npm install
-### Set the Node options for compatibility:
-export NODE_OPTIONS=--openssl-legacy-provider
-### Start the client application:
-npm start - http://localhost:3000/
+3. **SSH into the Vagrant box:**
+   vagrant ssh
+   cd /home/ubuntu/yolo
+   docker-compose up
 
 
-## Start the Backend
-
-### Navigate to the client directory:
-cd ../backend
-### Install the required dependencies:
-npm install
-### Start the client application:
-npm start 
-
-## Add a Product
-To add a product, fill in the product details in the form. Note that the price field only accepts numeric input.
-<img src="./client/src/images/Pasted image.png" alt="TagsDocker" />
+   
