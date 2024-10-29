@@ -58,7 +58,6 @@ extending our environment to incorporate both Terraform for infrastructure provi
 
    terraform init
 
-   <img src="./client/src/images/ip31.png" alt="vagrant" />
 
   **Apply Terraform Configuration: Creates a Docker container based on Ubuntu.**
 
@@ -66,21 +65,18 @@ extending our environment to incorporate both Terraform for infrastructure provi
    confirm by saying yes
 
 
-   <img src="./client/src/images/ip31.png" alt="vagrant" />
-
-
 2. **Step 2: Configure and Deploy Application with Ansible**
 
    Add Your Docker container’s IP (e.g., 172.17.0.2), to the Ansible hosts inventory file.
 
-   Currently the existing one is my IP for my running docker image.
+   <i><b>Currently the existing one is my IP for my running docker image.</i></b>
 
    You can check your ip by running:-
 
    **docker inspect <container_name_or_id> | grep "IPAddress"**
 
 
-   **Run Ansible Playbook:**
+3.  **Run Ansible Playbook:**
 
    Deploys and configures the application on the provisioned Docker container.
 
@@ -92,4 +88,4 @@ extending our environment to incorporate both Terraform for infrastructure provi
   **Visit http://172.17.0.2:3000 in your browser to verify deployment or the ip you specified**
 
 
-   <img src="./client/src/images/IP33.png" alt="vagrant" />
+   <img src="./client/src/images/ip32.png" alt="vagrant" />
