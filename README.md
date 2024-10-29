@@ -7,11 +7,6 @@ This README outlines the setup and provisioning of the YOLO project using Ansibl
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Verification](#verification)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
-- [Contributing](#contributing)
-- [Acknowledgments](#acknowledgments)
 
 ## Project Overview
 
