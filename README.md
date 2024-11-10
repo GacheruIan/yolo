@@ -1,100 +1,56 @@
-# YOLO Project Setup - Stage 1
+# YOLO Project - Client Setup on Kubernetes
 
-This README outlines the setup and provisioning of the YOLO project using Ansible and Vagrant.
+This guide provides steps to deploy and access the YOLO project's client component on Kubernetes using Minikube.
 
-## Table of Contents
-- [Project Overview](#project-overview)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Usage](#usage)
+## Prerequisites
+- Ensure Minikube is installed and running.
+- Set up Minikube tunnel to expose LoadBalancer services locally.
 
-## Project Overview
+## Kubernetes Configuration Files
 
-The YOLO Project is a full-stack application designed for managing products seamlessly. 
+The Kubernetes configurations for deploying the client component are located in the `k8s/` directory.
 
-## Requirements
+### 1. Client Deployment (`client-deployment.yaml`)
+Defines the client deployment by specifying:
+- **Replicas**: Ensures one instance of the client pod.
+- **Containers**: Deploys the client image `iangacheru/my-client:1.1`, exposes container port 80, and defines CPU and memory resources.
 
-Before you begin, ensure you have met the following requirements:
+### 2. Client Service (`client-service.yaml`)
+Exposes the client application on a NodePort:
+- **NodePort**: Exposes the client service externally via port 30080.
+- **Selector**: Targets the client deployment.
 
-- [Vagrant](https://www.vagrantup.com/downloads) installed on your machine.
-- [VirtualBox](https://www.virtualbox.org/) installed.
-- [Ansible &  Terraform](https://www.ansible.com/) installed on your host machine.
+### 3. Ingress (`ingress.yaml`)
+Configures HTTP access routes to the client and backend:
+- **Rules**: Sets `192.168.49.2.nip.io` as the host and directs traffic for `/` to `client-service` (client app) and `/backend` to `backend-service`.
 
-## Installation
+## Steps to Deploy
 
-1. **Clone the repository:**
+1. **Start Minikube**  
+   Make sure Minikube is running:
+   ```
+   minikube status
 
-   ```bash
-   git clone https://github.com/GacheruIan/yolo.git
-   cd yolo
+2. **Enable Minikube Tunnel**
+   Run Minikube tunnel in a separate terminal to allow LoadBalancer services to be accessible:
 
-2. **Provision the Vagrant box:**
-   vagrant up
-   <img src="./client/src/images/ip31.png" alt="vagrant" />
+   ```
+   minikube tunnel
 
-3. **SSH into the Vagrant box:**
-   vagrant ssh
-   cd /home/ubuntu/yolo
-   docker ps-a to confirm images are well config
-   docker-compose up
-   <img src="./client/src/images/ip30.png" alt="vagrant" />
-
-   **use yaml in stage1 to achieve the above accurately, the new yaml some things are different for stage2 objectives**
-
-
-
-   # Stage 2: Ansible and Terraform - Automated Infrastructure and Application Provisioning
-
-   extending our environment to incorporate both Terraform for infrastructure provisioning and Ansible for configuration management and application deployment. This setup enables a fully automated workflow, allowing us to provision and configure a server with a single command.
-
-   ## Installation
-
-1. **Provision Infrastructure with Terraform:**
-
-   Navigate to the Terraform directory:
+3. **Deploy the Client Application Apply the Kubernetes manifests in the k8s/ directory**
+   ```
+   kubectl apply -f k8s/
 
 
-   **Initialize Terraform: Downloads required provider plugins.**
+4. **Access the Client Application Use kubectl port-forward to map local port 8080 to the client service port 80:**
+   ```
+   kubectl port-forward svc/client-service 8080:80
 
-   terraform init
-
-   <br />
-
-
-2. **Apply Terraform Configuration: Creates a Docker container based on Ubuntu.**
-
-   terraform apply     
-   confirm by saying yes
-
-
-   <br />
-
-
-3. **Configure and Deploy Application with Ansible**
-
-   Add Your Docker container’s IP (e.g., 172.17.0.2), to the Ansible hosts inventory file.
-
-   <i><b>Currently the existing one is my IP for my running docker image.</i></b>
-
-   You can check your ip by running:-
-
-   **docker inspect <container_name_or_id> | grep "IPAddress"**
-
-
-   <br />
-
-4. **Run Ansible Playbook:**
-
-   Deploys and configures the application on the provisioned Docker container.
-
-   **ansible-playbook ansible/yolo.yaml** 
+   ```
    
-   you can add --ask-become-pass if facing sudo err. 
+   ***Access the client application at http://localhost:8080.***
+
+<img src="./client/src/images/social_icons/IP33.png" alt="deployment" />
 
 
-   <br />
 
-    **Visit http://172.17.0.2:3000 in your browser to verify deployment or the ip you specified**
-
-
-   <img src="./client/src/images/social_icons/IP33.png" alt="vagrant" />
