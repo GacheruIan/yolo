@@ -6,7 +6,6 @@ const upload = multer();
 
 const productRoute = require('./routes/api/productRoute');
 
-// MongoDB connection string - Update for Kubernetes
 let mongodb_url = 'mongodb://mongodb:27017/';  // MongoDB service name in Kubernetes
 let dbName = 'yolomy';  // Your database name
 
