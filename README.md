@@ -80,7 +80,7 @@ Configures HTTP access routes to the client and backend:
 
    <img src="./client/src/images/social_icons/IP33.png" alt="deployment" />
 
-5. ***Access the Backend API Use kubectl port-forward to map local port 5000 to the backend service port 5000:**
+5. **Access the Backend API Use kubectl port-forward to map local port 5000 to the backend service port 5000:**
 
    ```
    kubectl port-forward svc/backend-service 5000:5000
