@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: client-pv
+spec:
+  capacity:
+    storage: 1Gi  
+  accessModes:
+    - ReadWriteOnce  
+  hostPath:
+    path: /mnt/data/client  
+  persistentVolumeReclaimPolicy: Retain  # Decide what happens to the volume when it's no longer in use
+  storageClassName: manual  
