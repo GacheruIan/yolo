@@ -8,5 +8,5 @@ spec:
   ports:
     - port: 5000
       targetPort: 5000
-      nodePort: 30001  # Specify a NodePort (e.g., 30001)
+      nodePort: 30001  
   type: NodePort

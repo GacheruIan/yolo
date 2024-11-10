@@ -22,11 +22,11 @@ spec:
           mountPath: /data/db
         resources:
           requests:
-            memory: "512Mi"  # Minimum memory requested for MongoDB
-            cpu: "500m"      # Minimum CPU requested for MongoDB
+            memory: "512Mi"  
+            cpu: "500m"      
           limits:
-            memory: "1Gi"    # Maximum memory allowed for MongoDB
-            cpu: "1"         # Maximum CPU allowed for MongoDB
+            memory: "1Gi"    
+            cpu: "1"         
       volumes:
       - name: mongo-storage
         persistentVolumeClaim:
