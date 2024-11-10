@@ -4,9 +4,16 @@ metadata:
   name: yolo-ingress
 spec:
   rules:
-  - host: 192.168.49.2.nip.io #for this you can put you minikubeip
+  - host: 192.168.49.2.nip.io
     http:
       paths:
+      - path: /backend
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 8080
       - path: /
         pathType: Prefix
         backend:
