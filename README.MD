@@ -49,8 +49,8 @@ Configures HTTP access routes to the client and backend:
    ```
    
    ***Access the client application at http://localhost:8080.***
-   <img src="./client/src/images/ks8client.png" alt="vagrant" />
-
+   
+   <img src="./client/src/images/social_icons/IP33.png" alt="vagrant" />
 
 
 
