@@ -24,3 +24,10 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "250m"
+        volumeMounts:
+        - name: client-storage
+          mountPath: /app/data
+      volumes:
+      - name: client-storage
+        persistentVolumeClaim:
+          claimName: client-pvc
