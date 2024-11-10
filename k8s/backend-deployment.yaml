@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: iangacheru/backend:1.1  # Change this to your backend image
+        ports:
+        - containerPort: 5000  # The port the backend will expose
+        env:
+        - name: MONGODB_URI
+          value: "MONGODB_URI: mongodb://mongo:27017/yolomy"  # MongoDB service URI in Kubernetes
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
