@@ -45,7 +45,10 @@ Configures HTTP access routes to the client and backend:
 4. **Access the Client Application Use kubectl port-forward to map local port 8080 to the client service port 80:**
    ```
    kubectl port-forward svc/client-service 8080:80
-   Access the client application at http://localhost:8080.
+
+   ```
+   
+   ***Access the client application at http://localhost:8080.***
 
 
 
