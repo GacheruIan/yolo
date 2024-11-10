@@ -49,6 +49,10 @@ Configures HTTP access routes to the client and backend:
    ```
    
    ***Access the client application at http://localhost:8080.***
+<p align="center">
+  <img src="../yolo/client/src/images/ks8client.png" alt="deployment" width="400"/>
+</p>
+
 
 
 
