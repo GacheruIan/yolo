@@ -28,19 +28,23 @@ Configures HTTP access routes to the client and backend:
 
 1. **Start Minikube**  
    Make sure Minikube is running:
-   ```bash
+   ```
+   minikube status
 
 2. **Enable Minikube Tunnel**
    Run Minikube tunnel in a separate terminal to allow LoadBalancer services to be accessible:
 
-   ```minikube tunnel
+   ```
+   minikube tunnel
 
 3. **Deploy the Client Application Apply the Kubernetes manifests in the k8s/ directory**
-   ```kubectl apply -f k8s/
+   ```
+   kubectl apply -f k8s/
 
 
 4. **Access the Client Application Use kubectl port-forward to map local port 8080 to the client service port 80:**
-   ```kubectl port-forward svc/client-service 8080:80
+   ```
+   kubectl port-forward svc/client-service 8080:80
    Access the client application at http://localhost:8080.
 
 
