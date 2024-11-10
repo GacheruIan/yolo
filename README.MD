@@ -50,7 +50,7 @@ Configures HTTP access routes to the client and backend:
    
    ***Access the client application at http://localhost:8080.***
 
-<img src="./client/src/images/deployed.png" alt="deployment" width="300" height="200"/>
+<img src="./client/src/images/social_icons/IP33.png" alt="deployment" width="300" height="200"/>
 
 
 
